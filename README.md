@@ -1,66 +1,79 @@
-## Foundry
+# DeFi Primitives
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository contains a collection of core DeFi primitives implemented in Solidity.
 
-Foundry consists of:
+The goal of this repo is not to build a full application, but to demonstrate understanding of fundamental protocol design patterns commonly used in production DeFi systems.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+Each primitive is implemented with a focus on clarity, correctness, and reasoning rather than feature completeness.
 
-## Documentation
+---
 
-https://book.getfoundry.sh/
+## Included Primitives
 
-## Usage
+### Vault
 
-### Build
+A basic asset-to-share vault that:
 
-```shell
-$ forge build
+- accepts ERC20 assets
+- issues ERC20 shares representing proportional ownership
+- adjusts share value automatically as vault assets change
+- mirrors the design behind ERC-4626.
+
+### Staking
+
+A staking system built on top of vault shares that:
+
+- allows users to stake ownership tokens
+- distributes rewards over time
+- uses reward-per-share accounting to avoid looping over users
+- staking logic intentionally separated from the vault
+
+---
+
+## Design Principles
+
+The implementations in this repository emphasize:
+
+- Separation of concerns (ownership vs incentives)
+- Scalable reward accounting
+- Gas efficiency
+- Explicit security considerations
+- Readability and explainability
+
+The code is intentionally minimal and avoids unnecessary complexity.
+
+---
+
+## Repository Structure
+
+src/
+
+─ vault/ # Asset-to-share vault primitive
+
+─ staking/ # Staking and reward accounting primitive
+
+test/
+
+── VaultStaking.t.sol
+
+Each primitive includes its own README explaining the design and reasoning in detail.
+
+---
+
+## Tooling
+
+This project uses **Foundry** for development and testing.
+
+### Setup
+
+```bash
+forge install
+forge build
+forge test
 ```
 
-### Test
+### Notes
 
-```shell
-$ forge test
-```
+These contracts are provided for educational and demonstration purposes.
 
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+They are not audited and should not be used in production without proper review.

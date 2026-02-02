@@ -32,8 +32,6 @@ When a user deposits assets into the vault:
 4. The vault pulls the assets from the user using `transferFrom`.
 5. The calculated shares are minted to the user.
 
-
-
 ---
 
 ## Withdraw Flow
@@ -52,7 +50,7 @@ The withdrawal process follows the checks-effects-interactions pattern and uses 
 
 The core formulas used by the vault are:
 
-```
+```solidity
 shares = amount * totalSupply / totalAssets
 assets = shares * totalAssets / totalSupply
 ```

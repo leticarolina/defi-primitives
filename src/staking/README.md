@@ -14,11 +14,13 @@ This separation allows the vault and staking logic to remain modular and composa
 ## Why Staking Uses Vault Shares
 
 The vault is responsible for:
+
 - holding assets
 - minting and burning shares
 - maintaining ownership proportions
 
 The staking contract is responsible for:
+
 - tracking staked shares
 - distributing rewards over time
 
@@ -61,6 +63,7 @@ This prevents users from earning rewards that were accrued before they staked.
 Rewards are not distributed continuously.
 
 Instead, rewards are:
+
 - accumulated globally over time
 - settled only when users interact (stake, withdraw, or claim)
 
@@ -72,12 +75,12 @@ This approach keeps gas usage constant and makes the system scalable.
 
 The amount of rewards earned by a user is calculated as:
 
-```
+```solidity
 earned = previousRewards + (userStakedShares * (rewardPerShare - userCheckpoint))
 ```
 
-
 This ensures rewards are distributed proportionally based on both:
+
 - time
 - ownership
 
