@@ -106,11 +106,7 @@ contract testVaultStaking is Test {
         assertEq(vaultStaking.totalStaked(), 1e18);
     }
 
-    function test_staking_withdraw()
-        public
-        approveAndDeposit(1e18)
-        approveAndStake(1e18)
-    {
+    function test_staking_withdraw() public approveAndDeposit(1e18) approveAndStake(1e18) {
         vm.startPrank(TEST_USER);
         vaultStaking.withdraw(1e18);
         vm.stopPrank();
@@ -120,11 +116,7 @@ contract testVaultStaking is Test {
         assertEq(vault.balanceOf(TEST_USER), 1e18);
     }
 
-    function test_staking_getReward()
-        public
-        approveAndDeposit(1e18)
-        approveAndStake(1e18)
-    {
+    function test_staking_getReward() public approveAndDeposit(1e18) approveAndStake(1e18) {
         vm.warp(block.timestamp + 1 days); //fast forward 1 day to accumulate rewards
 
         uint256 expected = 1 days * rewardRate;

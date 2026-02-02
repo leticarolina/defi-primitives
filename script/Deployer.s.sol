@@ -11,11 +11,7 @@ contract Deployer {
 
     function run() public returns (Vault, VaultStaking) {
         vault = new Vault(IERC20(0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9)); //WETH on Sepolia
-        vaultStaking = new VaultStaking(
-            IERC20(vault),
-            IERC20(0x8cA1a0E543b8C02B29e5e9C3f7EC18EEb82b157f),
-            1e18
-        );
+        vaultStaking = new VaultStaking(IERC20(vault), IERC20(0x8cA1a0E543b8C02B29e5e9C3f7EC18EEb82b157f), 1e18);
 
         return (vault, vaultStaking);
     }

@@ -104,8 +104,7 @@ contract VaultStaking {
     function earned(address account) public view returns (uint256) {
         uint256 userShares = balanceOf[account]; //user current shares
 
-        uint256 rewardDelta = rewardPerShare() -
-            userRewardPerSharePaid[account]; //How much of that history belongs to this user?
+        uint256 rewardDelta = rewardPerShare() - userRewardPerSharePaid[account]; //How much of that history belongs to this user?
 
         return rewards[account] + (userShares * rewardDelta) / 1e18; //Already earned + newly earned
     }
