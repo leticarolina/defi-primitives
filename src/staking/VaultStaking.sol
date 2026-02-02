@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import {IERC20} from "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
-import {Vault} from "../vault/Vault.sol";
 import {SafeERC20} from "../../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract VaultStaking {
     error amountCannotBeZero();
     error InsufficientBalance();
+    error TransferFailed();
 
-    IERC20 public immutable vault;
-    IERC20 public immutable rewardToken;
+    IERC20 public immutable VAULT;
+    IERC20 public immutable REWARD_TOKEN;
     uint256 public rewardRate; //This defines how fast rewards are emitted
 
     uint256 public totalStaked;
@@ -23,8 +23,8 @@ contract VaultStaking {
     mapping(address => uint256) public rewards; // already-settled rewards, “wallet” of pending rewards.
 
     constructor(IERC20 _vault, IERC20 _rewardToken, uint256 _rewardRate) {
-        vault = _vault;
-        rewardToken = _rewardToken;
+        VAULT = _vault;
+        REWARD_TOKEN = _rewardToken;
         rewardRate = _rewardRate;
         lastUpdateTime = block.timestamp;
     }
@@ -37,7 +37,9 @@ contract VaultStaking {
         updateReward(msg.sender);
 
         // pull vault shares from user
-        vault.transferFrom(msg.sender, address(this), shares);
+        if (!VAULT.transferFrom(msg.sender, address(this), shares)) {
+            revert TransferFailed();
+        }
 
         balanceOf[msg.sender] += shares;
         totalStaked += shares;
@@ -57,7 +59,9 @@ contract VaultStaking {
         balanceOf[msg.sender] -= shares;
         totalStaked -= shares;
 
-        vault.transfer(msg.sender, shares);
+        if (!VAULT.transfer(msg.sender, shares)) {
+            revert TransferFailed();
+        }
     }
 
     function getReward() external {
@@ -66,7 +70,7 @@ contract VaultStaking {
         uint256 reward = rewards[msg.sender];
         rewards[msg.sender] = 0; // reset rewards of user, BEFORE transfer
 
-        SafeERC20.safeTransfer(rewardToken, msg.sender, reward); //transfer reward
+        SafeERC20.safeTransfer(REWARD_TOKEN, msg.sender, reward); //transfer reward
     }
 
     //the catch-up function

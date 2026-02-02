@@ -12,11 +12,12 @@ contract Vault is ERC20, ReentrancyGuard {
     error NoSharesInTheVault();
     error InsufficientShares();
     error ZeroSharesMinted();
+    error TransferFailed();
 
     IERC20 public immutable ASSET;
 
-    constructor(IERC20 _Asset) ERC20("Vault Share", "vSHARE") {
-        ASSET = _Asset;
+    constructor(IERC20 _asset) ERC20("Vault Share", "vSHARE") {
+        ASSET = _asset;
     }
 
     function deposit(uint256 amount) public {
@@ -31,7 +32,9 @@ contract Vault is ERC20, ReentrancyGuard {
             revert ZeroSharesMinted();
         }
 
-        ASSET.transferFrom(msg.sender, address(this), amount);
+        if (!ASSET.transferFrom(msg.sender, address(this), amount)) {
+            revert TransferFailed();
+        }
 
         _mint(msg.sender, shares);
     }
