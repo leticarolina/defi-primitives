@@ -4,12 +4,10 @@ pragma solidity ^0.8.13;
 import {Test} from "forge-std/Test.sol";
 import {IERC20} from "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {Vault} from "../src/vault/Vault.sol";
-import {Deployer} from "../script/Deployer.s.sol";
 import {VaultStaking} from "../src/staking/VaultStaking.sol";
 import {MockERC20} from "./mocks/MockERC20.sol";
 
 contract testVaultStaking is Test {
-    Deployer deployer;
     Vault vault;
     VaultStaking vaultStaking;
     MockERC20 asset;
