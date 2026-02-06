@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
-import {Escrow} from "../src/escrow/Escrow.sol";
+import {Escrow} from "../../src/escrow/Escrow.sol";
 import {Test} from "forge-std/Test.sol";
-import {MockERC20} from "./mocks/MockERC20.sol";
+import {MockERC20} from "./../mocks/MockERC20.sol";
 
 contract EscrowTest is Test {
     MockERC20 token;
