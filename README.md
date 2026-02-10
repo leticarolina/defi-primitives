@@ -81,11 +81,8 @@ The code is intentionally minimal and avoids unnecessary complexity.
 src/
 
 - escrow/ # Escrow contract with partial releases
-
-─ staking/ # Staking and reward accounting primitive
-
-─ vault/ # Asset-to-share vault primitive
-
+- staking/ # Staking and reward accounting primitive
+- vault/ # Asset-to-share vault primitive
 - vesting/ # Timelock and linear vesting with cliff
 
 Each primitive includes its own README explaining the design and reasoning in detail and a dedicated testing folder inside test/.
