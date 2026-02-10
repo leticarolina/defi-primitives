@@ -99,8 +99,7 @@ contract VaultStaking {
     }
 
     // Rewards don’t start when you deposit. They are calculated when you interact.
-
-    //How much reward history happened since user last checked?
+    //How much reward history happened since user last checked? How much of that history belongs to this user based on their shares?
     function earned(address account) public view returns (uint256) {
         uint256 userShares = balanceOf[account]; //user current shares
 

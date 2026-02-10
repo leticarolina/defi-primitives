@@ -26,7 +26,7 @@ contract Vault is ERC20, ReentrancyGuard {
             revert AmountZero();
         }
 
-        //effect - calculate shares, update vault accounting
+        //effect - calculate shares
         uint256 shares = convertToShares(amount);
         if (shares <= 0) {
             revert ZeroSharesMinted();
@@ -40,12 +40,12 @@ contract Vault is ERC20, ReentrancyGuard {
     }
 
     function withdraw(uint256 shares) public nonReentrant {
-        //check - user shares are not zero
+        //check - shares are not zero
         if (shares <= 0) {
             revert AmountZero();
         }
 
-        //effect - calculate amount, update vault accounting
+        //effect - calculate amount
         uint256 amount = convertToAssets(shares);
         if (amount <= 0) {
             revert AmountZero();
@@ -61,13 +61,14 @@ contract Vault is ERC20, ReentrancyGuard {
     }
 
     function convertToShares(uint256 amount) public view returns (uint256) {
-        uint256 supply = totalSupply();
-
+        uint256 supply = totalSupply(); // current total shares
         if (supply == 0) return amount;
-        uint256 currentTotalAssets = totalAssets();
+
+        uint256 currentTotalAssets = totalAssets(); // collateral value of the vault
         if (currentTotalAssets <= 0) {
             revert NoAssetsInTheVault();
         }
+
         return (amount * supply) / currentTotalAssets;
     }
 

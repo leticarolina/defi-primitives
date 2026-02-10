@@ -4,7 +4,7 @@
 
 This contract implements a staking system on top of a vault that uses ERC20 shares.
 
-Users stake vault shares (not underlying assets) to earn rewards over time.  
+Users stake vault shares to earn rewards over time.  
 The staking contract does not manage asset custody or share pricing; it only manages incentives.
 
 This separation allows the vault and staking logic to remain modular and composable.
@@ -90,7 +90,7 @@ This ensures rewards are distributed proportionally based on both:
 
 When a user stakes:
 
-1. The global reward state is updated.
+1. The global reward state is updated first.
 2. The user’s pending rewards are settled.
 3. Vault shares are transferred from the user to the staking contract.
 4. The user’s staked balance and total staked amount are updated.

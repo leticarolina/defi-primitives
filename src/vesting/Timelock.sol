@@ -24,6 +24,9 @@ contract Timelock {
     }
 
     function deposit() external {
+        if (withdrawn) {
+            revert AlreadyWithdrawn();
+        }
         bool success = TOKEN.transferFrom(msg.sender, address(this), AMOUNT);
         if (!success) {
             revert TransferFailed();

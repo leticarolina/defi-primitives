@@ -17,7 +17,7 @@ contract Escrow {
     address public immutable SELLER;
     address public immutable ARBITER;
     uint256 public immutable AMOUNT;
-    uint256 public immutable DEADLINE;
+    uint256 public deadline;
     uint256 public releasedAmount;
 
     bool public released;
@@ -31,7 +31,6 @@ contract Escrow {
         SELLER = _seller;
         AMOUNT = _amount;
         BUYER = msg.sender;
-        DEADLINE = block.timestamp + 3 days;
         ARBITER = _arbiter;
     }
 
@@ -43,7 +42,7 @@ contract Escrow {
             revert AlreadyDeposited();
         }
         deposited = true;
-        // TOKEN.transferFrom(address(this), seller, amount);
+        deadline = block.timestamp + 3 days;
         bool success = TOKEN.transferFrom(BUYER, address(this), AMOUNT);
         if (!success) {
             revert TransferFailed();
@@ -57,7 +56,7 @@ contract Escrow {
         if (canceled || released) {
             revert ContractIsFinalized();
         }
-        if (block.timestamp < DEADLINE) {
+        if (block.timestamp < deadline) {
             revert DeadlineNotReached();
         }
         canceled = true;
