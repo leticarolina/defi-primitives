@@ -65,7 +65,7 @@ contract TimelockTest is Test {
         assertEq(token.balanceOf(address(timelock)), 0);
     }
 
-    function test_constructor_setsImmutableVariables() public {
+    function test_constructor_setsImmutableVariables() public view {
         assertEq(address(timelock.TOKEN()), address(token));
         assertEq(timelock.BENEFICIARY(), beneficiary);
         assertEq(timelock.AMOUNT(), amount);

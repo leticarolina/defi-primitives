@@ -62,7 +62,7 @@ contract VestingTest is Test {
         assertEq(token.balanceOf(address(vesting)), 0);
     }
 
-    function test_constructor_setsImmutableVariables() public {
+    function test_constructor_setsImmutableVariables() public view {
         assertEq(address(vesting.TOKEN()), address(token));
         assertEq(vesting.BENEFICIARY(), beneficiary);
         assertEq(vesting.START(), start);

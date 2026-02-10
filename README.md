@@ -30,6 +30,38 @@ A staking system built on top of vault shares that:
 
 ---
 
+### Escrow
+
+A state-based escrow contract that:
+
+- securely holds funds between buyer and seller  
+- supports arbiter-based dispute resolution  
+- enforces irreversible finalization  
+- allows partial releases with strict accounting invariants  
+
+---
+
+### Timelock
+
+A time-based escrow primitive that:
+
+- locks tokens until a predefined unlock time  
+- enforces single withdrawal execution  
+- models delayed payments and scheduled releases  
+
+---
+
+### Vesting
+
+A linear token vesting contract with cliff behavior that:
+
+- unlocks tokens gradually over time  
+- prevents over-claiming through released tracking  
+- enforces strict vesting invariants  
+- models common token distribution schedules  
+
+---
+
 ## Design Principles
 
 The implementations in this repository emphasize:
@@ -48,15 +80,15 @@ The code is intentionally minimal and avoids unnecessary complexity.
 
 src/
 
-─ vault/ # Asset-to-share vault primitive
+- escrow/ # Escrow contract with partial releases
 
 ─ staking/ # Staking and reward accounting primitive
 
-test/
+─ vault/ # Asset-to-share vault primitive
 
-── VaultStaking.t.sol
+- vesting/ # Timelock and linear vesting with cliff
 
-Each primitive includes its own README explaining the design and reasoning in detail.
+Each primitive includes its own README explaining the design and reasoning in detail and a dedicated testing folder inside test/.
 
 ---
 
