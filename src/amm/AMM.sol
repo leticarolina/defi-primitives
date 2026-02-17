@@ -32,14 +32,8 @@ contract AMM {
     function addLiquidity(uint256 amountA, uint256 amountB) external {
         // User sends tokens to pool
         //ERC20 'transfer' and 'transferFrom' calls should check the return value
-        require(
-            tokenA.transferFrom(msg.sender, address(this), amountA),
-            "Fail"
-        );
-        require(
-            tokenB.transferFrom(msg.sender, address(this), amountB),
-            "Fail"
-        );
+        require(tokenA.transferFrom(msg.sender, address(this), amountA), "Fail");
+        require(tokenB.transferFrom(msg.sender, address(this), amountB), "Fail");
 
         uint256 mintedShares;
 
@@ -70,19 +64,14 @@ contract AMM {
 
     function swapAToB(uint256 amountAIn) external {
         // User sends token A to pool
-        require(
-            tokenA.transferFrom(msg.sender, address(this), amountAIn),
-            "Fail"
-        );
+        require(tokenA.transferFrom(msg.sender, address(this), amountAIn), "Fail");
 
         // Take fee
-        uint256 amountInWithFee = (amountAIn * FEE_MULTIPLIER) /
-            FEE_DENOMINATOR;
+        uint256 amountInWithFee = (amountAIn * FEE_MULTIPLIER) / FEE_DENOMINATOR;
 
         // Calculate how much B to send out
         //"give me a proportional chunk of the opposite reserve, but adjusted so invariant holds"
-        uint256 amountBOut = (amountInWithFee * reserveB) /
-            (reserveA + amountInWithFee);
+        uint256 amountBOut = (amountInWithFee * reserveB) / (reserveA + amountInWithFee);
 
         // Update pool balances
         reserveA += amountAIn;
@@ -93,16 +82,11 @@ contract AMM {
     }
 
     function swapBToA(uint256 amountBIn) external {
-        require(
-            tokenB.transferFrom(msg.sender, address(this), amountBIn),
-            "Fail"
-        );
+        require(tokenB.transferFrom(msg.sender, address(this), amountBIn), "Fail");
 
-        uint256 amountInWithFee = (amountBIn * FEE_MULTIPLIER) /
-            FEE_DENOMINATOR;
+        uint256 amountInWithFee = (amountBIn * FEE_MULTIPLIER) / FEE_DENOMINATOR;
 
-        uint256 amountAOut = (amountInWithFee * reserveA) /
-            (reserveB + amountInWithFee);
+        uint256 amountAOut = (amountInWithFee * reserveA) / (reserveB + amountInWithFee);
 
         reserveB += amountBIn;
         reserveA -= amountAOut;
@@ -117,7 +101,6 @@ contract AMM {
     function removeLiquidity(uint256 shareAmount) external {
         // Calculate proportional ownership
         uint256 amountA = (shareAmount * reserveA) / totalShares;
-
         uint256 amountB = (shareAmount * reserveB) / totalShares;
 
         // Burn LP shares
@@ -137,13 +120,13 @@ contract AMM {
     /*                         HELPERS                              */
     /* ------------------------------------------------------------ */
 
-    function min(uint256 a, uint256 b) internal pure returns (uint256) {
+    function min(uint256 a, uint256 b) public pure returns (uint256) {
         return a < b ? a : b;
     }
 
     // Babylonian square root (used only for first LP)
     //"give me the square root of a number"
-    function sqrt(uint256 y) internal pure returns (uint256 z) {
+    function sqrt(uint256 y) public pure returns (uint256 z) {
         if (y > 3) {
             z = y;
             uint256 x = y / 2 + 1;
