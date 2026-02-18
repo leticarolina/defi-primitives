@@ -276,19 +276,22 @@ contract AMMTest is Test {
 
     function test_arbitrage_correctsPrice() public {
         // Initial price (B per A)
-        uint256 initialPrice = amm.reserveB() / amm.reserveA();
+        uint256 initialPrice = amm.reserveB() / amm.reserveA(); //3.000 B per A
 
         // Step 1: distort price (buy B with A)
         vm.prank(trader);
         amm.swapAToB(2 ether); // push price away from equilibrium
+        //2 ETH
 
-        uint256 distortedPrice = amm.reserveB() / amm.reserveA();
+        uint256 distortedPrice = amm.reserveB() / amm.reserveA(); // B per A after amm.swapAToB(2 ether)
+        //30k - 5.983 = 24.017 USDC / 12 ETH = 2.0014 B per A
 
         assertLt(distortedPrice, initialPrice); // price must move
 
         // Step 2: arbitrage trade in opposite direction
         vm.prank(trader);
         amm.swapBToA(6_000 ether); // push back toward original price
+        //5.984 USDC after fee enters and 2.39 ETH leaves
 
         uint256 correctedPrice = amm.reserveB() / amm.reserveA();
 
